@@ -11,7 +11,7 @@ def home_and_home_data(years, conn=connection):
     """
     :param years: list
     :param conn: connection to the database
-    :return: DataFrame columns: ["pts_diff_home", "pts_diff_away", "W"]
+    :return: DataFrame columns: "pts_diff_home", "pts_diff_away", "W"
     """
     c = conn.cursor()
 
@@ -33,8 +33,8 @@ def home_and_home_data(years, conn=connection):
     conn.close()
 
     data = pd.DataFrame(data=result,
-                        columns=['Team_1_H', 'Team_2_A', 'Team_1_H_points', 'Team_2_A_points', 'OT_1', 'Team_1_A',
-                                 'Team_2_H', 'Team_2_H_points', 'Team_1_A_points', 'OT_2', 'Season'])
+                        columns=['Team_1_H', 'Team_2_A', 'Team_1_H_points', 'Team_2_A_points', 'OT_1', 'Team_2_H',
+                                 'Team_1_A', 'Team_2_H_points', 'Team_1_A_points', 'OT_2', 'Season'])
 
     df = pd.DataFrame(data=None, index=data.index, columns=["pts_diff_home", "pts_diff_away", "W"])
 

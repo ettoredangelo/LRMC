@@ -27,7 +27,10 @@ def logistic_regression(X, y):
     X_test = np.linspace(-70, 70, 300)
 
     loss = model(X_test * clf.coef_ + clf.intercept_).ravel()
-    plt.plot(X_test, loss, color='red', linewidth=3)
+    loss_expected = model(X_test * 0.0292 - 0.6228).ravel()
+
+    plt.plot(X_test, loss, color='red')
+    plt.plot(X_test, loss_expected, color='black')
 
     plt.show()
 
