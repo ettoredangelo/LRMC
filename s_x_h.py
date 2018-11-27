@@ -1,12 +1,10 @@
 import pandas as pd
+import numpy as np
 from sklearn.linear_model import LogisticRegression
 import matplotlib.pyplot as plt
 
 
 from utils import table
-
-# point diff at home   won away flag
-
 
 df = table([i for i in range(2000, 2004)])
 
@@ -26,10 +24,26 @@ X = df_1["pts_diff"].values.reshape(-1, 1)
 y = df_1["W"].values.reshape(-1, 1)
 
 clf = LogisticRegression(random_state=0, solver='lbfgs', multi_class='multinomial').fit(X, y)
-print(X)
-print(clf.predict_proba(X))
-plt.plot(X, clf.predict_proba(X)[:, 0])
+a = [i[0] for i in X]
+print(clf.predict_proba(X)[:, 1])
+plt.plot(a, clf.predict_proba(X)[:, 1])
+
+# and plot the result
+plt.figure(1, figsize=(4, 3))
+plt.clf()
+plt.scatter(X.ravel(), y, color='black', zorder=20)
+X_test = np.linspace(-70, 70, 300)
+
+
+def model(x):
+    return 1 / (1 + np.exp(-x))
+
+
+loss = model(X_test * clf.coef_ + clf.intercept_).ravel()
+plt.plot(X_test, loss, color='red', linewidth=3)
 
 plt.show()
+
+print(clf.coef_, clf.intercept_)
 
 

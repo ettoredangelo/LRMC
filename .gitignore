@@ -113,6 +113,5 @@ dmypy.json
 # other
 .DS_Store
 .idea/
-scraper.py
-database_populator.py
 *.csv
+config.py

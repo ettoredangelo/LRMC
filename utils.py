@@ -1,8 +1,10 @@
 import pandas as pd
 import sqlite3
 
+from config import Config
+
 # Open the connection
-conn = sqlite3.connect("C:\\Users\\rdangelo\\Desktop\\ncaa_database\\Teams.db")
+conn = sqlite3.connect(Config.DB_PATH)
 cur = conn.cursor()
 
 
