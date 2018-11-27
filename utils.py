@@ -39,12 +39,12 @@ def home_and_home_data(years, conn=connection):
     df = pd.DataFrame(data=None, index=data.index, columns=["pts_diff_home", "pts_diff_away", "W"])
 
     df['pts_diff_home'] = data['Team_1_H_points'] - data['Team_2_A_points']
-    df['pts_diff_home'][data['OT_1'] == 1] = 0
+    df.loc[data['OT_1'] == 1, 'pts_diff_home'] = 0
     df['pts_diff_away'] = data['Team_1_A_points'] - data['Team_2_H_points']
 
     mask = df['pts_diff_away'] > 0
 
-    df["W"][mask] = 1
-    df["W"][~mask] = 0
+    df.loc[mask, "W"] = 1
+    df.loc[~mask, "W"] = 0
 
     return df
