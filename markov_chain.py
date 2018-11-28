@@ -8,7 +8,6 @@ def transition_matrix_prob():
     '''
     # N = number of games played by i at this moment
     # t_ij = 1/N * [sum(r_x) + sum (1-x)]
-    #
 
     pass
 
