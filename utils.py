@@ -5,10 +5,10 @@ import pandas as pd
 from config import Config
 
 
-def home_and_home_data(years):
+def get_home_and_home_data(years, ot=True):
     """
     :param years: list
-    :param conn: connection to the database
+    :param ot: boolean, if ot: pts_diff -> 0
     :return: DataFrame columns: "pts_diff_home", "pts_diff_away", "W"
     """
     conn = sqlite3.connect(Config.DB_PATH)
@@ -38,8 +38,10 @@ def home_and_home_data(years):
     df = pd.DataFrame(data=None, index=data.index, columns=["pts_diff_home", "pts_diff_away", "W"])
 
     df['pts_diff_home'] = data['Team_1_H_points'] - data['Team_2_A_points']
-    #df.loc[data['OT_1'] == 1, 'pts_diff_home'] = 0
     df['pts_diff_away'] = data['Team_1_A_points'] - data['Team_2_H_points']
+
+    if ot:
+        df.loc[data['OT_1'] == 1, 'pts_diff_home'] = 0
 
     mask = df['pts_diff_away'] > 0
 
