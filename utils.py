@@ -1,8 +1,25 @@
 import sqlite3
 
+import numpy as np
 import pandas as pd
 
 from config import Config
+
+
+class Model:
+    def __init__(self, a, b):
+        self.a = a
+        self.b = b
+
+        self.h = (- b / a) / 2
+
+    def r_H(self, x):
+        x += self.h
+        x = x * self.a + self.b
+        return 1 / (1 + np.exp(-x))
+
+    def r_R(self, x):
+        return 1 - self.r_H(x)
 
 
 def get_home_and_home_data(years, ot=True):
@@ -49,3 +66,54 @@ def get_home_and_home_data(years, ot=True):
     df.loc[~mask, "W"] = 0
 
     return df
+
+
+def get_teams(year):
+    conn = sqlite3.connect(Config.DB_PATH)
+    c = conn.cursor()
+
+    sql = f"SELECT DISTINCT Team_1 FROM Scores WHERE Season = {year} ORDER BY Team_1"
+
+    c.execute(sql)
+    r = c.fetchall()
+
+    c.close()
+    conn.close()
+
+    teams = [i[0] for i in r]
+
+    return teams
+
+
+def get_schedule(team, year):
+    conn = sqlite3.connect(Config.DB_PATH)
+    c = conn.cursor()
+
+    c.execute("SELECT Team_1, Team_2, Team_1_points, Team_2_points From Scores Where Season = ? AND " \
+              "(Team_1 = ? OR Team_2 = ?) AND Neutral = 0 AND Type = 'REG'", (year, team, team))
+
+    r = c.fetchall()
+
+    c.close()
+    conn.close()
+
+    schedule = pd.DataFrame(data=r, columns=['Team_1', 'Team_2', 'Team_1_points', 'Team_2_points'])
+
+    return schedule
+
+
+def steady_state_probability(p):
+    """
+    :param p: transition matrix
+    :return: steady state probability
+    """
+    dim = p.shape[0]
+
+    q = (p - np.eye(dim))
+    ones = np.ones(dim)
+    q = np.c_[q, ones]
+
+    QTQ = np.dot(q, q.T)
+    bQT = np.ones(dim)
+
+    return np.linalg.solve(QTQ, bQT)
