@@ -6,7 +6,7 @@ from utils import Model, get_home_and_home_data, get_teams, get_schedule, steady
 
 
 def LRMC(year):
-    data = get_home_and_home_data([i for i in range(1993, 2019)])
+    data = get_home_and_home_data([i for i in range(2013, 2018)])
 
     X = data["pts_diff_home"].values.reshape(-1, 1)
     y = data["W"].values.ravel()
@@ -72,7 +72,12 @@ def LRMC(year):
     pi = steady_state_probability(transition_matrix.values)
     data = np.column_stack((teams, pi))
 
-    LRMC_ranking = pd.DataFrame(data=data, columns=['Team', 'LRMC_ranking']).sort_values(by='LRMC_ranking',
-                                                                                         ascending=False)
+    data = data[data[:, 1].argsort()]
+
+    LRMC_ranking = pd.DataFrame(data=data, index=np.arange(1, data.shape[0] + 1),
+                                columns=['Team', 'LRMC_ranking']).sort_values(by='LRMC_ranking',
+                                                                              ascending=False)
+
+    LRMC_ranking.index.name = 'Rk'
 
     return LRMC_ranking
