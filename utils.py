@@ -89,7 +89,7 @@ def get_schedule(team, year):
     conn = sqlite3.connect(Config.DB_PATH)
     c = conn.cursor()
 
-    c.execute("SELECT Team_1, Team_2, Team_1_points, Team_2_points From Scores Where Season = ? AND " \
+    c.execute("SELECT Team_1, Team_2, Team_1_points, Team_2_points From Scores Where Season = ? AND "
               "(Team_1 = ? OR Team_2 = ?) AND Neutral = 0 AND Type = 'REG'", (year, team, team))
 
     r = c.fetchall()
@@ -98,6 +98,8 @@ def get_schedule(team, year):
     conn.close()
 
     schedule = pd.DataFrame(data=r, columns=['Team_1', 'Team_2', 'Team_1_points', 'Team_2_points'])
+
+    schedule['pts_diff'] = schedule['Team_1_points'] - schedule['Team_2_points']
 
     return schedule
 

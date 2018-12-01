@@ -37,13 +37,13 @@ def LRMC(year):
                 games = schedule[mask]
 
                 for _, row in games.iterrows():
-                    pts_diff = row['Team_1_points'] - row['Team_2_points']
+                    x = row['pts_diff']
 
                     if row['Team_1'] == team_i:
-                        t_i_j += 1 - m.r_R(pts_diff)
+                        t_i_j += 1 - m.r_R(x)
 
                     else:
-                        t_i_j += 1 - m.r_H(pts_diff)
+                        t_i_j += 1 - m.r_H(x)
 
                 t_i_j /= N
 
@@ -53,13 +53,13 @@ def LRMC(year):
                 t_i_i = 0
 
                 for _, row in schedule.iterrows():
-                    pts_diff = row['Team_1_points'] - row['Team_2_points']
+                    x = row['pts_diff']
 
                     if row['Team_1'] == team_i:
-                        t_i_i += m.r_R(pts_diff)
+                        t_i_i += m.r_R(x)
 
                     else:
-                        t_i_i += m.r_H(pts_diff)
+                        t_i_i += m.r_H(x)
 
                 t_i_i /= N
 
