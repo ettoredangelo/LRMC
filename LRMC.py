@@ -24,18 +24,14 @@ def LRMC(year):
 
     transition_matrix = pd.DataFrame(data=None, index=teams, columns=teams)
 
-    for i in range(len(teams)):
-        team_i = teams[i]
-
+    for team_i in teams:
         schedule = get_schedule(team_i, year)
 
         N = schedule.shape[0]
 
-        for j in range(len(teams)):
-            if i != j:
+        for team_j in schedule.Team_1.unique():
+            if team_i != team_j:
                 t_i_j = 0
-
-                team_j = teams[j]
 
                 mask = (schedule['Team_1'] == team_j) | (schedule['Team_2'] == team_j)
                 games = schedule[mask]
@@ -55,14 +51,20 @@ def LRMC(year):
                 for _, row in schedule.iterrows():
                     pts_diff = row['Team_1_points'] - row['Team_2_points']
 
-                    t_i_i = m.r_R(pts_diff) + m.r_H(pts_diff)
+                    t_i_i += m.r_R(pts_diff) + m.r_H(pts_diff)
 
                 t_i_i /= N
+
                 transition_matrix.loc[team_i, team_i] = t_i_i
 
-    LRMC_ranking = steady_state_probability(transition_matrix.astype(np.float).values)
+        print(team_i)
 
-    LRMC_ranking = pd.DataFrame(data=LRMC_ranking, index=teams, columns=['ranking']).sort_values(by='ranking',
-                                                                                                 ascending=False)
+    transition_matrix = transition_matrix.fillna(0).astype(np.float)
+
+    pi = steady_state_probability(transition_matrix.values)
+    data = np.column_stack((teams, pi))
+
+    LRMC_ranking = pd.DataFrame(data=data, columns=['Team', 'LRMC_ranking']).sort_values(by='LRMC_ranking',
+                                                                                         ascending=False)
 
     return LRMC_ranking

@@ -113,5 +113,4 @@ dmypy.json
 # other
 .DS_Store
 .idea/
-*.csv
 config.py
