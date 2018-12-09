@@ -11,7 +11,7 @@ class Model:
         self.a = a
         self.b = b
 
-        self.h = (- b / a) / 2
+        self.h = - (b / a) / 2
 
     def r_H(self, x):
         x += self.h
