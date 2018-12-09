@@ -72,7 +72,7 @@ def LRMC(year):
     pi = steady_state_probability(transition_matrix.values)
     data = np.column_stack((teams, pi))
 
-    LRMC_ranking = pd.DataFrame(data=data, index=np.arange(data.shape[0], 0, -1), columns=['Team', 'pi'])
+    LRMC_ranking = pd.DataFrame(data=data, columns=['Team', 'pi'])
 
     LRMC_ranking.loc[:, 'pi'] = pd.to_numeric(LRMC_ranking['pi'])
     LRMC_ranking.sort_values(by='pi', ascending=False, inplace=True)
