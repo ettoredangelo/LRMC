@@ -6,7 +6,7 @@ from utils import Model, get_home_and_home_data, get_teams, get_schedule, steady
 
 
 def LRMC(year):
-    data = get_home_and_home_data([i for i in range(1993, 2017)])
+    data = get_home_and_home_data([i for i in range(2012, 2018)])
 
     X = data["pts_diff_home"].values.reshape(-1, 1)
     y = data["W"].values.ravel()
@@ -29,7 +29,7 @@ def LRMC(year):
 
         N = schedule.shape[0]
 
-        for team_j in schedule.Team_1.unique():
+        for team_j in schedule.Team_1.append(schedule.Team_2, ignore_index=True).unique():
             if team_i != team_j:
                 t_i_j = 0
 
