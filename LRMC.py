@@ -30,7 +30,10 @@ def LRMC(year):
         N = schedule.shape[0]
 
         for team_j in schedule.Team_1.append(schedule.Team_2, ignore_index=True).unique():
-            if team_i != team_j:
+            if team_j not in teams:
+                pass
+
+            elif team_i != team_j:
                 t_i_j = 0
 
                 mask = (schedule['Team_1'] == team_j) | (schedule['Team_2'] == team_j)

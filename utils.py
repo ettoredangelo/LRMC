@@ -72,7 +72,7 @@ def get_teams(year):
     conn = sqlite3.connect(Config.DB_PATH)
     c = conn.cursor()
 
-    sql = f"SELECT DISTINCT Team_1 FROM Scores WHERE Season = {year} ORDER BY Team_1"
+    sql = f'SELECT Name FROM Teams WHERE "{year}" = 1'
 
     c.execute(sql)
     r = c.fetchall()
@@ -81,6 +81,7 @@ def get_teams(year):
     conn.close()
 
     teams = [i[0] for i in r]
+    teams.sort()
 
     return teams
 
