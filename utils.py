@@ -102,6 +102,10 @@ def get_schedule(team, year):
 
     schedule['pts_diff'] = schedule['Team_1_points'] - schedule['Team_2_points']
 
+    teams = get_teams(year)
+
+    schedule = schedule[schedule['Team_1'].isin(teams) & schedule['Team_2'].isin(teams)]
+
     return schedule
 
 

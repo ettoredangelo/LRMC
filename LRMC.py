@@ -30,10 +30,7 @@ def LRMC(year):
         N = schedule.shape[0]
 
         for team_j in schedule.Team_1.append(schedule.Team_2, ignore_index=True).unique():
-            if team_j not in teams:
-                pass
-
-            elif team_i != team_j:
+            if team_i != team_j:
                 t_i_j = 0
 
                 mask = (schedule['Team_1'] == team_j) | (schedule['Team_2'] == team_j)
@@ -43,10 +40,10 @@ def LRMC(year):
                     x = row['pts_diff']
 
                     if row['Team_1'] == team_i:
-                        t_i_j += 1 - m.r_R(x)
+                        t_i_j += 1 - m.r_H(x)
 
                     else:
-                        t_i_j += 1 - m.r_H(x)
+                        t_i_j += 1 - m.r_R(x)
 
                 t_i_j /= N
 
@@ -59,10 +56,10 @@ def LRMC(year):
                     x = row['pts_diff']
 
                     if row['Team_1'] == team_i:
-                        t_i_i += m.r_R(x)
+                        t_i_i += m.r_H(x)
 
                     else:
-                        t_i_i += m.r_H(x)
+                        t_i_i += m.r_R(x)
 
                 t_i_i /= N
 
